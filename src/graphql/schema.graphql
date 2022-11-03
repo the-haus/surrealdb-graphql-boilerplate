@@ -1,0 +1,18 @@
+scalar JSON
+scalar JSONObject
+
+type Query {
+    welcome: String!
+    queryTodo: [Todo]
+}
+type Mutation {
+    createTodo(title: String!, description: String!): Todo
+    removeTodo(id: ID!): Boolean
+}
+type Todo {
+    id: ID!,
+    title: String
+    description: String
+}
+
+

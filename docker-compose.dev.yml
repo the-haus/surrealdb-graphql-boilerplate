@@ -1,0 +1,62 @@
+version: '3.8'
+services:
+  graphql:
+    build:
+      context: .
+      dockerfile: docker/node/Dockerfile
+    container_name: graphql-api
+    ports:
+      - "8500:8500"
+    depends_on:
+      - surrealdb
+  surrealdb:
+    image: surrealdb/surrealdb:latest
+    container_name: surrealdb
+    ports:
+      - "8000:8000"
+    command:
+      - start
+      - --log=debug
+      - --user=root
+      - --pass=root
+      - tikv://pd0:2379
+    depends_on:
+      - tikv0
+      - pd0
+    restart: always
+  pd0:
+    container_name: surrealdb-pd0
+    image: pingcap/pd:latest
+    ports:
+      - "2379"
+    volumes:
+      - surreal-data:/data
+      - surreal-logs:/logs
+    command:
+      - --name=pd0
+      - --client-urls=http://0.0.0.0:2379
+      - --peer-urls=http://0.0.0.0:2380
+      - --advertise-client-urls=http://pd0:2379
+      - --advertise-peer-urls=http://pd0:2380
+      - --initial-cluster=pd0=http://pd0:2380
+      - --data-dir=/data/pd0
+      - --log-file=/logs/pd0.log
+    restart: on-failure
+  tikv0:
+    container_name: surrealdb-tikv0
+    image: pingcap/tikv:latest
+    volumes:
+      - surreal-data:/data
+      - surreal-logs:/logs
+    command:
+      - --addr=0.0.0.0:20160
+      - --advertise-addr=tikv0:20160
+      - --data-dir=/data/tikv0
+      - --pd=pd0:2379
+      - --log-file=/logs/tikv0.log
+    depends_on:
+      - "pd0"
+    restart: on-failure
+volumes:
+  surreal-data:
+  surreal-logs:
