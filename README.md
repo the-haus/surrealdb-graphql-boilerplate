@@ -1,5 +1,5 @@
 
-# 🍽️ Surrealdb - GraphQL - Typescript 
+# 🍽️ Surrealdb - GraphQL - Typescript
 -  ⚙️ Surreal RPC Client [Surreal.js](https://github.com/surrealdb/surrealdb.js#surrealdbjs)
 -  🔥 Type checking  [TypeScript](https://www.typescriptlang.org/)
 -  📏  Linter with  [ESLint](https://eslint.org/)
@@ -41,7 +41,7 @@ SURREAL_PASS=root
 
 
 ## 💻 Preview
-|❌ [Client](https://github.com/the-haus/surrealdb-graphql-boilerplate) - NextJS - Typescript -  [Docs](https://github.com/the-haus/surrealdb-graphql-boilerplate) ![GraphQL API](https://puu.sh/JqErT/00bfe4847c.gif) |✅  Server - GraphQL - Typescript - [Docs](#surreal-api-typescript-boilerplate) ![GraphQL API](https://puu.sh/JqEsq/7c552ac177.gif) |
+|❌ [Client](https://github.com/the-haus/surrealdb-nextjs-boilerplate) - NextJS - Typescript -  [Docs](https://github.com/the-haus/surrealdb-nextjs-boilerplate) ![GraphQL API](https://puu.sh/JqErT/00bfe4847c.gif) |✅  Server - GraphQL - Typescript - [Docs](#%EF%B8%8F-surrealdb---graphql---typescript) ![GraphQL API](https://puu.sh/JqEsq/7c552ac177.gif) |
 |--|--|
 | *Please make sure to install the NextJS Boilerplate* | *Currently viewing* |
 
@@ -53,21 +53,21 @@ Fully-featured GraphQL Server with focus on easy setup, performance & great deve
     File: schema.graphql
 
 ```graphql
-scalar JSON  
-scalar JSONObject  
-  
-type Query {  
-	welcome: String!  
-	queryTodo: [Todo]  
-}  
-type Mutation {  
-	createTodo(title: String!, description: String!): Todo  
-	removeTodo(id: ID!): Boolean  
-}  
-type Todo {  
-	id: ID!,  
-	title: String  
-	description: String  
+scalar JSON
+scalar JSONObject
+
+type Query {
+    welcome: String!
+    queryTodo: [Todo]
+}
+type Mutation {
+    createTodo(title: String!, description: String!): Todo
+    removeTodo(id: ID!): Boolean
+}
+type Todo {
+    id: ID!,
+    title: String
+    description: String
 }
 ```
 
@@ -91,14 +91,14 @@ Anything that's supported by Node.js natively, namely `.js`, `.json`, `.mjs`. An
 
 ```json
 {
-	"scripts": {  
-		"watch": "tsup --watch --onSuccess \"node dist/index.js\"",  
-		"build": "tsup",  
-		"start": "node dist/index.js",  
-		"lint": "eslint -c .eslintrc",  
-		"generate": "graphql-codegen && npx eslint --fix src/types/**/*.d.ts",  
-		"prewatch": "yarn generate"  
-	}
+  "scripts": {
+    "watch": "tsup --watch --onSuccess \"node dist/index.js\"",
+    "build": "tsup",
+    "start": "node dist/index.js",
+    "lint": "eslint -c .eslintrc",
+    "generate": "graphql-codegen && npx eslint --fix src/types/**/*.d.ts",
+    "prewatch": "yarn generate"
+  }
 }
 ```
 
@@ -129,66 +129,66 @@ export default config;
 ### Docker Composer
     File: docker-compose.yml
 ```yaml
-version: '3.8'  
-services:  
-	graphql:  
-		build:  
-			context: .  
-			dockerfile: docker/node/Dockerfile  
-		container_name: surreal-api  
-		ports:  
-			- "8500:8500"  
-		depends_on:  
-			- surreal-db  
-	surreal-db:  
-		image: surrealdb/surrealdb:latest  
-		container_name: surreal-db  
-		ports:  
-			- "8000:8000"  
-		command:  
-			- start  
-			- --log=debug  
-			- --user=root  
-			- --pass=root  
-			- tikv://pd0:2379  
-		depends_on:  
-			- tikv0  
-			- pd0  
-		restart: always  
-	pd0:  
-		container_name: surrealdb-pd0  
-		image: pingcap/pd:latest  
-		ports:  
-			- "2379"  
-		volumes:  
-			- surreal-data:/data  
-			- surreal-logs:/logs  
-		command:  
-			- --name=pd0  
-			- --client-urls=http://0.0.0.0:2379  
-			- --peer-urls=http://0.0.0.0:2380  
-			- --advertise-client-urls=http://pd0:2379  
-			- --advertise-peer-urls=http://pd0:2380  
-			- --initial-cluster=pd0=http://pd0:2380  
-			- --data-dir=/data/pd0  
-			- --log-file=/logs/pd0.log  
-		restart: on-failure  
-	tikv0:  
-		container_name: surrealdb-tikv0  
-		image: pingcap/tikv:latest  
-		volumes:  
-			- surreal-data:/data  
-			- surreal-logs:/logs  
-		command:  
-			- --addr=0.0.0.0:20160  
-			- --advertise-addr=tikv0:20160  
-			- --data-dir=/data/tikv0  
-			- --pd=pd0:2379  
-			- --log-file=/logs/tikv0.log  
-		depends_on:  
-			- "pd0"  
-		restart: on-failure  
-volumes:  
-	surreal-data:  
-	surreal-logs:
+version: '3.8'
+services:
+  graphql:
+    build:
+      context: .
+      dockerfile: docker/node/Dockerfile
+    container_name: surreal-api
+    ports:
+      - "8500:8500"
+    depends_on:
+      - surreal-db
+  surreal-db:
+    image: surrealdb/surrealdb:latest
+    container_name: surreal-db
+    ports:
+      - "8000:8000"
+    command:
+      - start
+      - --log=debug
+      - --user=root
+      - --pass=root
+      - tikv://pd0:2379
+    depends_on:
+      - tikv0
+      - pd0
+    restart: always
+  pd0:
+    container_name: surrealdb-pd0
+    image: pingcap/pd:latest
+    ports:
+      - "2379"
+    volumes:
+      - surreal-data:/data
+      - surreal-logs:/logs
+    command:
+      - --name=pd0
+      - --client-urls=http://0.0.0.0:2379
+      - --peer-urls=http://0.0.0.0:2380
+      - --advertise-client-urls=http://pd0:2379
+      - --advertise-peer-urls=http://pd0:2380
+      - --initial-cluster=pd0=http://pd0:2380
+      - --data-dir=/data/pd0
+      - --log-file=/logs/pd0.log
+    restart: on-failure
+  tikv0:
+    container_name: surrealdb-tikv0
+    image: pingcap/tikv:latest
+    volumes:
+      - surreal-data:/data
+      - surreal-logs:/logs
+    command:
+      - --addr=0.0.0.0:20160
+      - --advertise-addr=tikv0:20160
+      - --data-dir=/data/tikv0
+      - --pd=pd0:2379
+      - --log-file=/logs/tikv0.log
+    depends_on:
+      - "pd0"
+    restart: on-failure
+volumes:
+  surreal-data:
+  surreal-logs:
   ```
