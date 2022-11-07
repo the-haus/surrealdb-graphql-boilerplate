@@ -96,7 +96,7 @@ Anything that's supported by Node.js natively, namely `.js`, `.json`, `.mjs`. An
     "build": "tsup",
     "start": "node dist/index.js",
     "lint": "eslint -c .eslintrc",
-    "generate": "graphql-codegen && npx eslint --fix src/types/**/*.d.ts",
+    "generate": "graphql-codegen",
     "prewatch": "yarn generate"
   }
 }
