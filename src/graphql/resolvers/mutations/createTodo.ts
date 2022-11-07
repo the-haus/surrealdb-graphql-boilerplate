@@ -1,5 +1,5 @@
-import { Resolvers } from "../../../types/resolvers";
-import { MutationCreateTodoArgs } from "../../../types/schema";
+import { Resolvers } from "types/resolvers";
+import { MutationCreateTodoArgs } from "types/schema";
 
 export default <Resolvers>{
     Mutation: {

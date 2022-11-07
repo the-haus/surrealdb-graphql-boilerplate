@@ -1,4 +1,4 @@
-import type { Resolvers } from "../../../types/resolvers";
+import type { Resolvers } from "types/resolvers";
 
 export default <Resolvers>{
     Query: {

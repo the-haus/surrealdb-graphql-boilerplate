@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "src",
     "target": "esnext",
     "moduleResolution": "node16",
     "module": "esnext",
