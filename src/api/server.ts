@@ -1,5 +1,5 @@
 import express from "express";
-import { createServer, YogaNodeServerInstance } from "@graphql-yoga/node";
+import { createSchema, createYoga, YogaServerInstance } from "graphql-yoga";
 import Surreal from "surrealdb.js";
 import { loadFiles } from "@graphql-tools/load-files";
 import { loadSchema } from "@graphql-tools/load";
@@ -10,7 +10,7 @@ import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader";
 
 class Server {
     private db: Surreal;
-    private graphql: YogaNodeServerInstance<any, any, any> | undefined;
+    private graphql: YogaServerInstance<any, any> | undefined;
     private express: Express;
 
     // Bind listener
@@ -35,7 +35,7 @@ class Server {
 
     private async createServer() {
         // Initialize graphql
-        this.graphql = createServer({
+        this.graphql = createYoga({
             graphiql: {
                 defaultVariableEditorOpen: false,
                 headerEditorEnabled: false,
@@ -48,15 +48,16 @@ class Server {
                 res,
                 db: this.db
             }),
-            schema: {
+            schema: createSchema({
                 typeDefs: await loadSchema(path.join(__dirname, "graphql/schema.graphql"), {
                     loaders: [new GraphQLFileLoader()]
                 }),
                 resolvers: await loadFiles(path.join(__dirname, "graphql/resolvers/**/*.js"), {
                     useRequire: true
                 })
-            }
+            })
         });
+
         // Serve .graphql file to dev
         this.express.use("/graphql", this.graphql);
         this.express.use(`/schema.graphql`, express.static("src/graphql/schema.graphql"));
